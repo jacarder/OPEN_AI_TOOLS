@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -25,6 +25,7 @@ export interface Database {
           id?: number
           title?: string | null
         }
+        Relationships: []
       }
       bazaar_items: {
         Row: {
@@ -60,23 +61,35 @@ export interface Database {
           tech_tier?: string
           weight?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "bazaar_items_bazaar_categories_id_fkey"
+            columns: ["bazaar_categories_id"]
+            referencedRelation: "bazaar_categories"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       open_ai_images: {
         Row: {
           base64: string | null
+          category: number | null
           created_at: string | null
           id: string
         }
         Insert: {
           base64?: string | null
+          category?: number | null
           created_at?: string | null
           id?: string
         }
         Update: {
           base64?: string | null
+          category?: number | null
           created_at?: string | null
           id?: string
         }
+        Relationships: []
       }
       systems: {
         Row: {
@@ -103,6 +116,7 @@ export interface Database {
           name?: string
           planet_count?: number
         }
+        Relationships: []
       }
     }
     Views: {
@@ -112,6 +126,9 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
       [_ in never]: never
     }
   }
